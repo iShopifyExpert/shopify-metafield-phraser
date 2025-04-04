@@ -1,0 +1,77 @@
+        {% assign metafield_data = product-metafield | parse_json %}
+        
+        {% capture render_html %}
+          {% for child in metafield_data.children %}
+            {% assign current_node = child %}
+        
+            {% case current_node.type %}
+              {% when 'paragraph' %}
+                <p>
+                  {% for node in current_node.children %}
+                    {% case node.type %}
+                      {% when 'text' %}
+                        {% if node.bold %}
+                          <strong>{{ node.value }}</strong>
+                        {% else %}
+                          {{ node.value }}
+                        {% endif %}
+                      {% when 'link' %}
+                        <a href="{{ node.url }}">
+                          {% for link_child in node.children %}
+                            {% if link_child.type == 'text' %}
+                              {% if link_child.bold %}
+                                <strong>{{ link_child.value }}</strong>
+                              {% else %}
+                                {{ link_child.value }}
+                              {% endif %}
+                            {% endif %}
+                          {% endfor %}
+                        </a>
+                    {% endcase %}
+                  {% endfor %}
+                </p>
+        
+              {% when 'list' %}
+                {% if current_node.listType == 'unordered' %}
+                  <ul>
+                {% else %}
+                  <ol>
+                {% endif %}
+        
+                {% for item in current_node.children %}
+                  <li>
+                    {% for node in item.children %}
+                      {% case node.type %}
+                        {% when 'text' %}
+                          {% if node.bold %}
+                            <strong>{{ node.value }}</strong>
+                          {% else %}
+                            {{ node.value }}
+                          {% endif %}
+                        {% when 'link' %}
+                          <a href="{{ node.url }}">
+                            {% for link_child in node.children %}
+                              {% if link_child.type == 'text' %}
+                                {% if link_child.bold %}
+                                  <strong>{{ link_child.value }}</strong>
+                                {% else %}
+                                  {{ link_child.value }}
+                                {% endif %}
+                              {% endif %}
+                            {% endfor %}
+                          </a>
+                      {% endcase %}
+                    {% endfor %}
+                  </li>
+                {% endfor %}
+        
+                {% if current_node.listType == 'unordered' %}
+                  </ul>
+                {% else %}
+                  </ol>
+                {% endif %}
+            {% endcase %}
+          {% endfor %}
+        {% endcapture %}
+        
+        {{ render_html }}
