@@ -36,7 +36,7 @@ Use this snippet when you have rich_text metafields on products or collections a
 
 Example metafield call in your template or section:
 
-{{ product.metafields.custom.short_description.value }}
+    {{ product.metafields.custom.short_description.value }}
 If that outputs raw JSON, use this snippet to parse and render it correctly.
 
 🛠️ How to install
@@ -47,7 +47,7 @@ Paste the full rendering code inside it (see code in this repo).
 
 Use the snippet like this wherever you want the metafield HTML to appear:
 
-{% render 'shopify-metafield-phraser', product-metafield: product.metafields.custom.short_description.value %}
+    {% render 'shopify-metafield-phraser', product-metafield: product.metafields.custom.short_description.value %}
 You can pass in any rich_text metafield, including for collections, blog articles, etc.
 
 💬 Output example
